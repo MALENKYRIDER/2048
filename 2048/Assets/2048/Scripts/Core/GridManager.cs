@@ -2,14 +2,14 @@ using UnityEngine;
 
 public class GridManager : MonoBehaviour
 {
-    private Board _board;
+    public Board Board { get; private set; }
 
     [SerializeField] private float _cellSize = 219f;
     [SerializeField] private float _cellSpace = 8f;
 
     private void Awake()
     {
-        _board = new Board();
+        Board = new Board();
     }
 
     public Vector2 GetCellCenter(int row, int column)

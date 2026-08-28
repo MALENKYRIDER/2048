@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "TileColor", menuName = "TileColorPalette")]
-public class TileColor : ScriptableObject
+public class TileColorPalette : ScriptableObject
 {
     public List<TilesInfo> tilesInfo = new List<TilesInfo>();
 
@@ -16,7 +16,7 @@ public class TileColor : ScriptableObject
             }
         }
         
-        return Color.clear;
+        return Color.black;
     }
 }
 
