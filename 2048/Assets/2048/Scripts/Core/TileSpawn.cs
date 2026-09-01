@@ -32,6 +32,11 @@ public class TileSpawn : MonoBehaviour
         tile.GetComponent<TileVisual>().SetupTile(random); 
     }
 
+    public void SpawnTileAfterMove()
+    {
+        SpawnRandomTile();
+    }
+
     private int Random2or4()
     {
         int random = Random.Range(0, 100);

@@ -131,6 +131,8 @@ GameObject:
   - component: {fileID: 15828655}
   - component: {fileID: 15828654}
   - component: {fileID: 15828657}
+  - component: {fileID: 15828658}
+  - component: {fileID: 15828659}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -194,6 +196,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 775b93dc2011e114f9d7ad62826f6ce3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InputManager
+  _moveManager: {fileID: 15828659}
+--- !u!114 &15828658
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 15828653}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e652203737e7a9747b238dc54755e48c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileManager
+--- !u!114 &15828659
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 15828653}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d759a2a08dd9cac459ad00fcbc240b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MoveManager
+  _inputManager: {fileID: 15828657}
+  _gridManager: {fileID: 15828654}
+  _tileManager: {fileID: 15828658}
+  _tileSpawn: {fileID: 15828655}
 --- !u!1 &47354661
 GameObject:
   m_ObjectHideFlags: 0
