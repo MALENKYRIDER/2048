@@ -9,6 +9,7 @@ public class MoveManager : MonoBehaviour
     [SerializeField] private GridManager _gridManager;
     [SerializeField] private TileManager _tileManager;
     [SerializeField] private TileSpawn _tileSpawn;
+    [SerializeField] private BoardRenderer _boardRenderer;
 
     private void Awake()
     {
@@ -21,6 +22,7 @@ public class MoveManager : MonoBehaviour
         if (isMoved)
         {
             _tileSpawn.SpawnTileAfterMove();
+            _boardRenderer.Rebuild();
         }
     }
     
@@ -30,6 +32,7 @@ public class MoveManager : MonoBehaviour
         if (isMoved)
         {
             _tileSpawn.SpawnTileAfterMove();
+            _boardRenderer.Rebuild();
         }
     }
 
@@ -39,6 +42,7 @@ public class MoveManager : MonoBehaviour
         if (isMoved)
         {
             _tileSpawn.SpawnTileAfterMove();
+            _boardRenderer.Rebuild();
         }
     }
 
@@ -48,6 +52,7 @@ public class MoveManager : MonoBehaviour
         if (isMoved)
         {
             _tileSpawn.SpawnTileAfterMove();
+            _boardRenderer.Rebuild();
         }
     }
 }

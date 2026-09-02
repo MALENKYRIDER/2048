@@ -1,18 +1,17 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 public class TileSpawn : MonoBehaviour
 {
-    [SerializeField] private GameObject _tilePrefab;
-    [SerializeField] private Transform _tilesBox;
     [SerializeField] private GridManager _gridManager;
+    [SerializeField] private BoardRenderer _boardRenderer;
 
     private void Start()
     {
         SpawnRandomTile();
         SpawnRandomTile();
+        _boardRenderer.Rebuild();
     }
 
     private void SpawnRandomTile()
@@ -26,10 +25,6 @@ public class TileSpawn : MonoBehaviour
 
         var random = Random2or4();
         _gridManager.Board.SetCells(row, column, random);
-        
-        var tile = Instantiate(_tilePrefab, _tilesBox);
-        tile.GetComponent<RectTransform>().anchoredPosition = _gridManager.GetCellCenter(row, column);
-        tile.GetComponent<TileVisual>().SetupTile(random); 
     }
 
     public void SpawnTileAfterMove()
