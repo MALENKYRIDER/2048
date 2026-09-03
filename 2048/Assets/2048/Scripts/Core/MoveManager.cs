@@ -1,4 +1,5 @@
-using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class MoveManager : MonoBehaviour
@@ -10,49 +11,58 @@ public class MoveManager : MonoBehaviour
     [SerializeField] private TileManager _tileManager;
     [SerializeField] private TileSpawn _tileSpawn;
     [SerializeField] private BoardRenderer _boardRenderer;
+    [SerializeField] private MoveAnimator _moveAnimator;
 
     private void Awake()
     {
-        Move = new Move(_gridManager, _tileManager);
+        MoveTraker moveTraker = new MoveTraker();
+        Move = new Move(_gridManager, _tileManager, moveTraker);
+    }
+
+    private IEnumerator MoveCoroutine(List<(Vector2Int from, Vector2Int to, bool isMerged)> instruction)
+    {
+        yield return StartCoroutine(_moveAnimator.MoveAnim(instruction));
+        _tileSpawn.SpawnTileAfterMove();
+        _boardRenderer.Rebuild();
     }
 
     public void UpMove()
     {
-        (int score, bool isMoved) = Move.UpMove();
+        (int score, bool isMoved, List<(Vector2Int from, Vector2Int to, bool isMerged)> instruction) = Move.UpMove();
+
         if (isMoved)
         {
-            _tileSpawn.SpawnTileAfterMove();
-            _boardRenderer.Rebuild();
+            StartCoroutine(MoveCoroutine(instruction));
         }
     }
-    
+
     public void DownMove()
     {
-        (int score, bool isMoved) = Move.DownMove();
+        (int score, bool isMoved, List<(Vector2Int from, Vector2Int to, bool isMerged)> instruction) = Move.DownMove();
+
         if (isMoved)
         {
-            _tileSpawn.SpawnTileAfterMove();
-            _boardRenderer.Rebuild();
+            StartCoroutine(MoveCoroutine(instruction));
         }
     }
 
     public void LeftMove()
     {
-        (int score, bool isMoved) = Move.LeftMove();
+        (int score, bool isMoved, List<(Vector2Int from, Vector2Int to, bool isMerged)> instruction) = Move.LeftMove();
+
         if (isMoved)
         {
-            _tileSpawn.SpawnTileAfterMove();
-            _boardRenderer.Rebuild();
+            StartCoroutine(MoveCoroutine(instruction));
         }
     }
 
     public void RightMove()
     {
-        (int score, bool isMoved) = Move.RightMove();
+        (int score, bool isMoved, List<(Vector2Int from, Vector2Int to, bool isMerged)> instruction) = Move.RightMove();
+
         if (isMoved)
         {
-            _tileSpawn.SpawnTileAfterMove();
-            _boardRenderer.Rebuild();
+            StartCoroutine(MoveCoroutine(instruction));
         }
     }
 }

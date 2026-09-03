@@ -6,12 +6,14 @@ public class Move
 {
     private readonly GridManager _gridManager;
     private readonly TileManager _tileManager;
+    private readonly MoveTraker _moveTraker;
 
 
-    public Move(GridManager gridManager, TileManager tileManager)
+    public Move(GridManager gridManager, TileManager tileManager, MoveTraker moveTraker)
     {
         _gridManager = gridManager;
         _tileManager = tileManager;
+        _moveTraker = moveTraker;
     }
 
     public int[] TakeRow(int row)
@@ -54,20 +56,27 @@ public class Move
         }
     }
 
-    public (int score, bool isMoved) UpMove()
+    public (int score, bool isMoved, List<(Vector2Int from, Vector2Int to, bool isMerged)> instruction) UpMove()
     {
         int score = 0;
         int lineScore = 0;
         bool isMoved = false;
         
         List<int> tilesValue = new List<int>();
+        List<(Vector2Int from, Vector2Int to, bool isMerged)> instruction =  new List<(Vector2Int from, Vector2Int to, bool isMerged)>();
 
         for (int column = 0; column < Board.Size; column++)
         {
             int[] columnValue = TakeColumn(column);
             
             (tilesValue, lineScore) = _tileManager.TileMerge(columnValue);
+            List<(int from, int to, bool isMerged)> instr = _moveTraker.Comprasion(columnValue, tilesValue.ToArray());
 
+            for (int i = 0; i < instr.Count; i++)
+            {
+                instruction.Add((new Vector2Int(instr[i].from, column), new Vector2Int(instr[i].to, column), instr[i].isMerged));
+            }
+            
             for (int i = 0; i < Board.Size; i++)
             {
                 if (tilesValue[i] != columnValue[i])
@@ -78,16 +87,17 @@ public class Move
             SaveColumn(column, tilesValue);
         }
         
-        return (score, isMoved);
+        return (score, isMoved, instruction);
     }
     
-    public (int score, bool isMoved) DownMove()
+    public (int score, bool isMoved, List<(Vector2Int from, Vector2Int to, bool isMerged)> instruction) DownMove()
     {
         int score = 0;
         int lineScore = 0;
         bool isMoved = false;
         
         List<int> tilesValue = new List<int>();
+        List<(Vector2Int from, Vector2Int to, bool isMerged)> instruction =  new List<(Vector2Int from, Vector2Int to, bool isMerged)>();
 
         for (int column = 0; column < Board.Size; column++)
         {
@@ -97,7 +107,13 @@ public class Move
             
             (tilesValue, lineScore) = _tileManager.TileMerge(columnValue);
             tilesValue.Reverse();
+            List<(int from, int to, bool isMerged)> instr = _moveTraker.Comprasion(originalColumn, tilesValue.ToArray());
 
+            for (int i = 0; i < instr.Count; i++)
+            {
+                instruction.Add((new Vector2Int(instr[i].from, column), new Vector2Int(instr[i].to, column), instr[i].isMerged));
+            }
+            
             for (int i = 0; i < Board.Size; i++)
             {
                 if (tilesValue[i] != originalColumn[i])
@@ -108,23 +124,30 @@ public class Move
             SaveColumn(column, tilesValue);
         }
         
-        return (score, isMoved);
+        return (score, isMoved, instruction);
     }
 
-    public (int score, bool isMoved) LeftMove()
+    public (int score, bool isMoved, List<(Vector2Int from, Vector2Int to, bool isMerged)> instruction) LeftMove()
     {
         int score = 0;
         int lineScore = 0;
         bool isMoved = false;
         
         List<int> tilesValue = new List<int>();
+        List<(Vector2Int from, Vector2Int to, bool isMerged)> instruction =  new List<(Vector2Int from, Vector2Int to, bool isMerged)>();
 
         for (int row = 0; row < Board.Size; row++)
         {
             int[] rowValue = TakeRow(row);
 
             (tilesValue, lineScore) = _tileManager.TileMerge(rowValue);
+            List<(int from, int to, bool isMerged)> instr = _moveTraker.Comprasion(rowValue, tilesValue.ToArray());
 
+            for (int i = 0; i < instr.Count; i++)
+            {
+                instruction.Add((new Vector2Int(row, instr[i].from), new Vector2Int(row, instr[i].to), instr[i].isMerged));
+            }
+            
             for (int i = 0; i < Board.Size; i++)
             {
                 if (tilesValue[i] != rowValue[i])
@@ -135,16 +158,17 @@ public class Move
             SaveRow(row, tilesValue);
         }
 
-        return (score, isMoved);
+        return (score, isMoved, instruction);
     }
     
-    public (int score, bool isMoved) RightMove()
+    public (int score, bool isMoved, List<(Vector2Int from, Vector2Int to, bool isMerged)> instruction) RightMove()
     {
         int score = 0;
         int lineScore = 0;
         bool isMoved = false;
         
         List<int> tilesValue = new List<int>();
+        List<(Vector2Int from, Vector2Int to, bool isMerged)> instruction =  new List<(Vector2Int from, Vector2Int to, bool isMerged)>();
 
         for (int row = 0; row < Board.Size; row++)
         {
@@ -154,7 +178,13 @@ public class Move
 
             (tilesValue, lineScore) = _tileManager.TileMerge(rowValue);
             tilesValue.Reverse();
+            List<(int from, int to, bool isMerged)> instr = _moveTraker.Comprasion(originalRow, tilesValue.ToArray());
 
+            for (int i = 0; i < instr.Count; i++)
+            {
+                instruction.Add((new Vector2Int(row, instr[i].from), new Vector2Int(row, instr[i].to), instr[i].isMerged));
+            }
+            
             for (int i = 0; i < Board.Size; i++)
             {
                 if (tilesValue[i] != originalRow[i])
@@ -165,6 +195,6 @@ public class Move
             SaveRow(row, tilesValue);
         }
 
-        return (score, isMoved);
+        return (score, isMoved, instruction);
     }
 }

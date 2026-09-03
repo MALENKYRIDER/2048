@@ -47,4 +47,19 @@ public class Board
         
         return cells;
     }
+
+    public int[,] GetBoardClone()
+    {
+        int[,] cloneGrid = new int[Size, Size];
+        
+        for (int row = 0; row < Size; row++)
+        {
+            for (int column = 0; column < Size; column++)
+            {
+                cloneGrid[row, column] = GetCells(row, column);
+            }
+        }
+        
+        return cloneGrid;
+    }
 }
