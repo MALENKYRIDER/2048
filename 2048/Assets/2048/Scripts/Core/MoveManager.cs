@@ -5,6 +5,7 @@ using UnityEngine;
 public class MoveManager : MonoBehaviour
 {
     public Move Move { get; private set; }
+    public CheckingGameState CheckingGameState { get; private set; }
 
     [SerializeField] private InputManager _inputManager;
     [SerializeField] private GridManager _gridManager;
@@ -12,11 +13,13 @@ public class MoveManager : MonoBehaviour
     [SerializeField] private TileSpawn _tileSpawn;
     [SerializeField] private BoardRenderer _boardRenderer;
     [SerializeField] private MoveAnimator _moveAnimator;
+    [SerializeField] private ScoreManager _scoreManager;
 
     private void Awake()
     {
         MoveTraker moveTraker = new MoveTraker();
         Move = new Move(_gridManager, _tileManager, moveTraker);
+        CheckingGameState = new CheckingGameState(_gridManager.Board);
     }
 
     private IEnumerator MoveCoroutine(List<(Vector2Int from, Vector2Int to, bool isMerged)> instruction)
@@ -24,6 +27,12 @@ public class MoveManager : MonoBehaviour
         yield return StartCoroutine(_moveAnimator.MoveAnim(instruction));
         _tileSpawn.SpawnTileAfterMove();
         _boardRenderer.Rebuild();
+
+        if (CheckingGameState.IsLose())
+            Debug.Log("Lose");
+
+        if (CheckingGameState.IsWin())
+            Debug.Log("WIN");
     }
 
     public void UpMove()
@@ -33,6 +42,7 @@ public class MoveManager : MonoBehaviour
         if (isMoved)
         {
             StartCoroutine(MoveCoroutine(instruction));
+            _scoreManager.Score(score);
         }
     }
 
@@ -43,6 +53,7 @@ public class MoveManager : MonoBehaviour
         if (isMoved)
         {
             StartCoroutine(MoveCoroutine(instruction));
+            _scoreManager.Score(score);
         }
     }
 
@@ -53,6 +64,7 @@ public class MoveManager : MonoBehaviour
         if (isMoved)
         {
             StartCoroutine(MoveCoroutine(instruction));
+            _scoreManager.Score(score);
         }
     }
 
@@ -63,6 +75,7 @@ public class MoveManager : MonoBehaviour
         if (isMoved)
         {
             StartCoroutine(MoveCoroutine(instruction));
+            _scoreManager.Score(score);
         }
     }
 }
