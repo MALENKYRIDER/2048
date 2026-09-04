@@ -6,6 +6,7 @@ public class TileVisual : MonoBehaviour
 {
     [SerializeField] private TMP_Text _tileNumberText;
     [SerializeField] private Image _tileBackground;
+    [SerializeField] private Image _tileBackgroundShadow;
     [SerializeField] private TileColorPalette _tileColorPalette;
 
     public void SetupTile(int value)
@@ -13,6 +14,7 @@ public class TileVisual : MonoBehaviour
         _tileNumberText.text = value.ToString();
         Color backgroundColor = _tileColorPalette.GetColor(value);
         _tileBackground.color = backgroundColor;
+        _tileBackgroundShadow.color = backgroundColor;
         _tileNumberText.color = SetupNumberColor(backgroundColor);
     }
 

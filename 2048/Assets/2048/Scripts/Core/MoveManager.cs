@@ -14,6 +14,20 @@ public class MoveManager : MonoBehaviour
     [SerializeField] private BoardRenderer _boardRenderer;
     [SerializeField] private MoveAnimator _moveAnimator;
     [SerializeField] private ScoreManager _scoreManager;
+    [SerializeField] private PopupManager _popupManager;
+
+    private bool _isBlocked = false;
+    private bool _wasWin = false;
+
+    public void Unblock()
+    {
+        _isBlocked = false;
+    }
+
+    public void ResetWin()
+    {
+        _wasWin = false;
+    }
 
     private void Awake()
     {
@@ -27,20 +41,37 @@ public class MoveManager : MonoBehaviour
         yield return StartCoroutine(_moveAnimator.MoveAnim(instruction));
         _tileSpawn.SpawnTileAfterMove();
         _boardRenderer.Rebuild();
+        
+        bool isLose = CheckingGameState.IsLose();
+        bool isWin = CheckingGameState.IsWin(); 
 
-        if (CheckingGameState.IsLose())
-            Debug.Log("Lose");
-
-        if (CheckingGameState.IsWin())
-            Debug.Log("WIN");
+        if (isLose)
+        {
+            _isBlocked = true;
+            _popupManager.ShowLosePopup();
+        }
+        else if (isWin && !_wasWin)
+        {
+            _isBlocked = true;
+            _wasWin = true;
+            _popupManager.ShowWinPopup();
+        }
+        else
+        {
+             _isBlocked = false;
+        }
     }
 
     public void UpMove()
     {
+        if (_isBlocked == true)
+            return;
+
         (int score, bool isMoved, List<(Vector2Int from, Vector2Int to, bool isMerged)> instruction) = Move.UpMove();
 
         if (isMoved)
         {
+            _isBlocked = true;
             StartCoroutine(MoveCoroutine(instruction));
             _scoreManager.Score(score);
         }
@@ -48,10 +79,14 @@ public class MoveManager : MonoBehaviour
 
     public void DownMove()
     {
+        if (_isBlocked == true)
+            return;
+
         (int score, bool isMoved, List<(Vector2Int from, Vector2Int to, bool isMerged)> instruction) = Move.DownMove();
 
         if (isMoved)
         {
+            _isBlocked = true;
             StartCoroutine(MoveCoroutine(instruction));
             _scoreManager.Score(score);
         }
@@ -59,10 +94,14 @@ public class MoveManager : MonoBehaviour
 
     public void LeftMove()
     {
+        if (_isBlocked == true)
+            return;
+
         (int score, bool isMoved, List<(Vector2Int from, Vector2Int to, bool isMerged)> instruction) = Move.LeftMove();
 
         if (isMoved)
         {
+            _isBlocked = true;
             StartCoroutine(MoveCoroutine(instruction));
             _scoreManager.Score(score);
         }
@@ -70,10 +109,14 @@ public class MoveManager : MonoBehaviour
 
     public void RightMove()
     {
+        if (_isBlocked == true)
+            return;
+
         (int score, bool isMoved, List<(Vector2Int from, Vector2Int to, bool isMerged)> instruction) = Move.RightMove();
 
         if (isMoved)
         {
+            _isBlocked = true;
             StartCoroutine(MoveCoroutine(instruction));
             _scoreManager.Score(score);
         }

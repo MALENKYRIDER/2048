@@ -1,4 +1,3 @@
-using System;
 using TMPro;
 using UnityEngine;
 
@@ -27,5 +26,11 @@ public class ScoreManager : MonoBehaviour
             PlayerPrefs.SetInt("BestScore", _bestScore);
             _bestScoreText.text = _bestScore.ToString();
         }
+    }
+
+    public void ResetScore()
+    {
+        _score = 0;
+        _scoreText.text = _score.ToString();
     }
 }
