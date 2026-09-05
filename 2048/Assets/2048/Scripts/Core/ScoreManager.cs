@@ -33,4 +33,15 @@ public class ScoreManager : MonoBehaviour
         _score = 0;
         _scoreText.text = _score.ToString();
     }
+    
+    public void SaveScore()
+    {
+        PlayerPrefs.SetInt("Score", _score);
+    }
+
+    public void LoadScore()
+    {
+        _score = PlayerPrefs.GetInt("Score", 0);
+        _scoreText.text = _score.ToString();
+    }
 }
