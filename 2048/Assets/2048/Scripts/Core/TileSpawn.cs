@@ -6,19 +6,27 @@ public class TileSpawn : MonoBehaviour
 {
     [SerializeField] private GridManager _gridManager;
     [SerializeField] private BoardRenderer _boardRenderer;
+    [SerializeField] private MoveManager _moveManager;
 
     private void Start()
     {
-        SpawnRandomTile();
-        SpawnRandomTile();
-        _boardRenderer.Rebuild();
+        if (_moveManager.SaveGameService.LoadGame())
+        {
+            _boardRenderer.Rebuild();
+        }
+        else
+        {
+            SpawnRandomTile();
+            SpawnRandomTile();
+            _boardRenderer.Rebuild();
+        }
     }
 
     private void SpawnRandomTile()
     {
         List<Vector2Int> emptyCells = _gridManager.Board.GetEmptyCells();
         int randomIndex = Random.Range(0, emptyCells.Count);
-        
+
         Vector2Int correctCell = emptyCells[randomIndex];
         int row = correctCell.x;
         int column = correctCell.y;
@@ -41,7 +49,7 @@ public class TileSpawn : MonoBehaviour
         {
             random = 4;
         }
-        
+
         return random;
     }
 }

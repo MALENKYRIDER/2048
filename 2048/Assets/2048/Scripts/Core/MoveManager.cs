@@ -6,6 +6,7 @@ public class MoveManager : MonoBehaviour
 {
     public Move Move { get; private set; }
     public CheckingGameState CheckingGameState { get; private set; }
+    public SaveGameService SaveGameService { get; private set; }
 
     [SerializeField] private InputManager _inputManager;
     [SerializeField] private GridManager _gridManager;
@@ -19,6 +20,19 @@ public class MoveManager : MonoBehaviour
     private bool _isBlocked = false;
     private bool _wasWin = false;
 
+    private void Awake()
+    {
+        MoveTraker moveTraker = new MoveTraker();
+        Move = new Move(_gridManager, _tileManager, moveTraker);
+        CheckingGameState = new CheckingGameState(_gridManager.Board);
+        SaveGameService = new SaveGameService(_gridManager, _scoreManager);
+    }
+
+    public void Block()
+    {
+        _isBlocked = true;
+    }
+    
     public void Unblock()
     {
         _isBlocked = false;
@@ -29,18 +43,12 @@ public class MoveManager : MonoBehaviour
         _wasWin = false;
     }
 
-    private void Awake()
-    {
-        MoveTraker moveTraker = new MoveTraker();
-        Move = new Move(_gridManager, _tileManager, moveTraker);
-        CheckingGameState = new CheckingGameState(_gridManager.Board);
-    }
-
     private IEnumerator MoveCoroutine(List<(Vector2Int from, Vector2Int to, bool isMerged)> instruction)
     {
         yield return StartCoroutine(_moveAnimator.MoveAnim(instruction));
         _tileSpawn.SpawnTileAfterMove();
         _boardRenderer.Rebuild();
+        SaveGameService.SaveGame();
         
         bool isLose = CheckingGameState.IsLose();
         bool isWin = CheckingGameState.IsWin(); 
