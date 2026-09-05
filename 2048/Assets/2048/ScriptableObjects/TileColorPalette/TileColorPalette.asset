@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a4d28c4c065a7041ab3ef4aa86d7514, type: 3}
+  m_Name: TileColorPalette
+  m_EditorClassIdentifier: Assembly-CSharp::TileColor
+  tilesInfo:
+  - number: 2
+    color: {r: 1, g: 0.96862745, b: 0.9098039, a: 1}
+  - number: 4
+    color: {r: 1, g: 0.9372549, b: 0.7607843, a: 1}
+  - number: 8
+    color: {r: 1, g: 0.7019608, b: 0.2784314, a: 1}
+  - number: 16
+    color: {r: 1, g: 0.54901963, b: 0.101960786, a: 1}
+  - number: 32
+    color: {r: 1, g: 0.37254903, b: 0.12156863, a: 1}
+  - number: 64
+    color: {r: 1, g: 0.18039216, b: 0.18039216, a: 1}
+  - number: 128
+    color: {r: 1, g: 0.84313726, b: 0, a: 1}
+  - number: 256
+    color: {r: 1, g: 0.78039217, b: 0, a: 1}
+  - number: 512
+    color: {r: 1, g: 0.7019608, b: 0, a: 1}
+  - number: 1024
+    color: {r: 1, g: 0.627451, b: 0, a: 1}
+  - number: 2048
+    color: {r: 1, g: 0.56078434, b: 0, a: 1}
